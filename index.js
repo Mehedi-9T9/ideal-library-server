@@ -107,6 +107,35 @@ async function run() {
             const result = await bookCollection.find(query).toArray()
             res.send(result)
         })
+        //update book
+        app.get('/update/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: new ObjectId(id) }
+            const result = await bookCollection.findOne(query)
+            res.send(result)
+        })
+
+        app.patch('/updatebook/:id', async (req, res) => {
+            const id = req.params.id
+            const updatebook = req.body
+            const filter = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    bookName: updatebook.bookName,
+                    quantity: updatebook.quantity,
+                    authorName: updatebook.authorName,
+                    category: updatebook.category,
+                    rating: updatebook.rating,
+                    photo: updatebook.photo,
+                    description: updatebook.description,
+                    about: updatebook.about
+                },
+            };
+            const result = await bookCollection.updateOne(filter, updateDoc, options)
+            res.send(result)
+
+        })
 
 
 
