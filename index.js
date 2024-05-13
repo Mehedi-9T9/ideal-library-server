@@ -70,6 +70,12 @@ async function run() {
             res.send(result)
         })
 
+        app.get('/availablebook', async (req, res) => {
+
+            const result = await bookCollection.find().toArray()
+            res.send(result)
+        })
+
         //details data load
         app.get('/book/:id', async (req, res) => {
             const id = req.params.id
@@ -95,9 +101,14 @@ async function run() {
         //return and delete
         app.delete('/return/:id', async (req, res) => {
             const id = req.params.id
-            const value = bookCollection.updateMany({ _id: new ObjectId(id) }, { $inc: { quantity: 1 } })
             const filter = { _id: new ObjectId(id) }
             const result = await borrowCollection.deleteOne(filter)
+            res.send(result)
+        })
+        //Quantity increment
+        app.post('/updatequan/:booksId', async (req, res) => {
+            const id = req.params.booksId
+            const result = await bookCollection.updateMany({ _id: new ObjectId(id) }, { $inc: { quantity: 1 } })
             res.send(result)
         })
         //My book
