@@ -36,7 +36,7 @@ async function run() {
         const borrowCollection = client.db("BooksDB").collection("borrows");
 
 
-
+        //all book data
         app.post('/addBook', async (req, res) => {
             const book = req.body
             const result = await bookCollection.insertOne(book)
